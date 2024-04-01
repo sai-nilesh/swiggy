@@ -6,24 +6,33 @@ class UserClass extends React.Component{
         super(props);
         this.state = {
             count :1,
-            count2:2
+            count2:2,
+            git:{
+                name:"osho"
+            }
         }
-
+      console.log(this.props.name + "Child Constructer");
     }
+
+    async componentDidMount(){
+        console.log(this.props.name +"Child Compenent did mount");
+        const data = await fetch("https://api.github.com/users/sai-nilesh");
+        const json = await data.json();
+        this.setState ({
+            git:json
+        })
+    };
     render(){
-        const {name,location } = this.props;
-        const {count} = this.state;
+        // const {name,location } = this.props;
+        
+        const{name,location,avatar_url} = this.state.git;
         return(
             <div> 
-                <h3>Count:{count}</h3>
+                {/* {console.log( this.props.name+"Child Render")} */}
                
-                <button onClick={()=>{
-                    this.setState({
-                        count:this.state.count+1
-                    })
-                }}>Incre Count</button>
                 <h3>Name:{name}</h3>
                 <h5>Location:{location} </h5>
+                <img src={avatar_url}/>
                 <h5>Contact:@sainilesh76</h5>
             </div>
         )
