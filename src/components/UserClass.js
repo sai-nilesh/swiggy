@@ -21,14 +21,14 @@ class UserClass extends React.Component{
         this.setState ({
             git:json
         })
-        this.time = setInterval(() => {
-            console.log("JAI SREE RAM");
-        }, 1000);
+        // this.time = setInterval(() => {
+        //     console.log("JAI SREE RAM");
+        // }, 1000);
         
     };
 
     componentWillUnmount(){
-           clearInterval(this.time);
+        //    clearInterval(this.time);
     }
     render(){
         

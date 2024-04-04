@@ -2,6 +2,7 @@ import RestaurtantCard from "./RestaurtantCard";
 import React, { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 
 const Body =  () =>{
@@ -9,22 +10,32 @@ const Body =  () =>{
 const [ListOfRes,setListOfRes] = useState([]);
 const [FilterRes,setFilterRes] = useState([]);
 
+
+
+
 const [searchVal, setSearchVal] = useState("");
+
 
 useEffect(()=>{
   fetchData();
 },[]);
 
+
 const fetchData = async()=>{
  const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.406498&lng=78.47724389999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
  const json = await data.json();
- console.log(json);
+//  console.log(json);
   setListOfRes(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
 ?.restaurants);
  setFilterRes(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
   ?.restaurants);
 };
 
+
+const onlineStatus = useOnlineStatus();
+console.log(ListOfRes);
+
+if(onlineStatus === false)  return( <h1> Looks like you are offline!! Please check the internet connection</h1> )
 
   if(ListOfRes.length === 0){
      return <Shimmer/>
@@ -51,7 +62,7 @@ const fetchData = async()=>{
 
         </div>
        <div className="filter">
-            <button onClick={() =>{
+            <button onClick={() =>{ 
                 const filteredList = ListOfRes.filter(
                     (res)=> res.info.avgRating > 4
                 );
@@ -61,10 +72,10 @@ const fetchData = async()=>{
             }>Top restaurant chains in Hyderabad</button>
         </div>
        </div>
-        <div className="res-container">
+        <div className="  flex flex-wrap" >
           {FilterRes.map((restaurent) =>(
           
-            <Link to={"/resturants/"+restaurent.info.id} key = {restaurent.info.id}><RestaurtantCard resData={restaurent} /></Link>
+            <Link to={"/resturants/"+restaurent.info.id} key = {restaurent.info.id}  ><RestaurtantCard resData={restaurent} /></Link>
             
           ))}
         
